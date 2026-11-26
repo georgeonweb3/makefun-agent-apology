@@ -36,10 +36,14 @@ def main() -> None:
     os.makedirs("/output", exist_ok=True)
     with open("/output/entry.txt", "w", encoding="utf-8") as f:
         f.write(text)
-    # Read-back verification: what the grader reads is what we wrote.
+    # Read-back verification: what the grader reads is what we wrote,
+    # byte for byte and within the gate.
     with open("/output/entry.txt", encoding="utf-8") as f:
-        if f.read() != text:
-            raise SystemExit("read-back mismatch")
+        written = f.read()
+    if written != text:
+        raise SystemExit("read-back mismatch")
+    if not (1 <= len(written) <= MAX_CHARS):
+        raise SystemExit("read-back outside gate")
 
 
 if __name__ == "__main__":
